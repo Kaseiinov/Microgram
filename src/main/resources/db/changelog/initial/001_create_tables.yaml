@@ -1,0 +1,221 @@
+databaseChangeLog:
+  - changeSet:
+      id: 001 create unnecessary tables
+      author: Kaseiinov
+      changes:
+        - createTable:
+            tableName: users
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: first_name
+                  type: VARCHAR(50)
+              - column:
+                  name: last_name
+                  type: VARCHAR(50)
+              - column:
+                  name: login
+                  type: VARCHAR(50)
+              - column:
+                  name: email
+                  type: VARCHAR
+              - column:
+                  name: password
+                  type: VARCHAR
+              - column:
+                  name: avatar
+                  type: VARCHAR
+              - column:
+                  name: description
+                  type: VARCHAR(200)
+
+        - createTable:
+            tableName: files
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: file_name
+                  type: VARCHAR
+              - column:
+                  name: description
+                  type: VARCHAR(200)
+              - column:
+                  name: user_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_user_id_files
+                    references: users(id)
+              - column:
+                  name: date_time_publish
+                  type: timestamp
+
+        - createTable:
+            tableName: comments
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: comment
+                  type: VARCHAR(200)
+              - column:
+                  name: user_id
+                  type: BIGINT
+                  constraints:
+                    foreignKeyName: fk_user_id_comments
+                    references: users(id)
+              - column:
+                  name: file_id
+                  type: BIGINT
+                  constraints:
+                    foreignKeyName: fk_file_id_comments
+                    references: files(id)
+              - column:
+                  name: date_time_publish
+                  type: timestamp
+
+        - createTable:
+            tableName: avatars
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: avatar_name
+                  type: VARCHAR
+              - column:
+                  name: user_id
+                  type: BIGINT
+                  constraints:
+                    foreignKeyName: fk_user_id_avatars
+                    references: users(id)
+
+        - createTable:
+            tableName: subscriptions
+            columns:
+              - column:
+                  name: user_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_user_id_subscriptions
+                    references: users(id)
+              - column:
+                  name: user_subscriber_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_user_subscriber_id_subscriptions
+                    references: users(id)
+        - addPrimaryKey:
+            tableName: subscriptions
+            columnNames: user_id, user_subscriber_id
+            constraintName: pk_subscriptions
+
+
+        - createTable:
+            tableName: likes
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: user_id
+                  type: BIGINT
+                  constraints:
+                    foreignKeyName: fk_user_id_likes
+                    references: users(id)
+              - column:
+                  name: file_id
+                  type: BIGINT
+                  constraints:
+                    foreignKeyName: fk_file_id_likes
+                    references: users(id)
+
+        - createTable:
+            tableName: AUTHORITIES
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: authority
+                  type: varchar(50)
+
+        - createTable:
+            tableName: roles
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+              - column:
+                  name: role
+                  type: varchar(50)
+
+        - createTable:
+            tableName: usr_roles
+            columns:
+              - column:
+                  name: usr_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    foreignKeyName: fk_usr_email_to_roles
+                    references: users(id)
+              - column:
+                  name: role_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    foreignKeyName: fk_role_id_to_usr
+                    references: roles(id)
+
+        - createTable:
+            tableName: roles_authorities
+            columns:
+              - column:
+                  name: role_id
+                  type: long
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    foreignKeyName: fk_role_id_to_auth
+                    references: roles(id)
+              - column:
+                  name: authority_id
+                  type: long
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    foreignKeyName: fk_authority_id_to_roles
+                    references: authorities(id)

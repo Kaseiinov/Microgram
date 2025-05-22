@@ -44,7 +44,7 @@ public class User {
     @ManyToMany(fetch = FetchType.LAZY, mappedBy = "subscriptions")
     private Collection<User> followers;
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "users")
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "users")
     private Collection<Role> roles;
 
 }

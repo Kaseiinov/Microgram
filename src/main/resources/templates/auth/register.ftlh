@@ -6,29 +6,37 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Register</title>
-    <link rel="stylesheet" href="style.css" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 </head>
 <body>
-<div class="container">
+<div class="my-container">
     <div class="form-section">
         <div class="form-box">
             <h1>Microgram</h1>
-            <@spring.formInput "userDto.email" 'id="form3Example1cg" class="form-inputs" placeholder="Email"' />
-            <@spring.showErrors "<br>" "error text-danger" />
+            <form action="/auth/register" method="post">
 
-            <@spring.formInput "userDto.password" 'id="form3Example1cg" class="form-inputs" placeholder="Password"' />
-            <@spring.showErrors "<br>" "error text-danger" />
+                <#if _csrf??>
+                    <input type="hidden" name="${(_csrf.parameterName)!'csrf-param-name'}"
+                           value="${(_csrf.token)!'csrf-token'}"/>
+                </#if>
 
-            <@spring.formInput "userDto.firstName" 'id="form3Example1cg" class="form-inputs" placeholder="First name"' />
-            <@spring.showErrors "<br>" "error text-danger" />
+                <@spring.formInput "userDto.email" 'id="form3Example1cg" class="form-inputs" placeholder="Email"' />
+                <@spring.showErrors "<br>" "error text-danger" />
 
-            <@spring.formInput "userDto.lastName" 'id="form3Example1cg" class="form-inputs" placeholder="Last name"' />
-            <@spring.showErrors "<br>" "error text-danger" />
+                <@spring.formInput "userDto.password" 'id="form3Example1cg" class="form-inputs" placeholder="Password"' />
+                <@spring.showErrors "<br>" "error text-danger" />
 
-            <button>Sign up</button>
+                <@spring.formInput "userDto.firstName" 'id="form3Example1cg" class="form-inputs" placeholder="First name"' />
+                <@spring.showErrors "<br>" "error text-danger" />
+
+                <@spring.formInput "userDto.lastName" 'id="form3Example1cg" class="form-inputs" placeholder="Last name"' />
+                <@spring.showErrors "<br>" "error text-danger" />
+
+                <button>Sign up</button>
+            </form>
         </div>
         <div class="signup-box">
-            <p>Do you have an account? <a href="#">Sign in</a></p>
+            <p>Do you have an account? <a href="/auth/login">Sign in</a></p>
         </div>
     </div>
     <style>
@@ -47,7 +55,7 @@
             min-height: 100vh;
         }
 
-        .container {
+        .my-container {
             display: flex;
             align-items: center;
             gap: 40px;

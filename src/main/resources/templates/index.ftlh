@@ -41,6 +41,7 @@
             border-radius: 8px;
             width: 75%;
             overflow: hidden;
+            padding: 10px;
         }
 
         .post-header {

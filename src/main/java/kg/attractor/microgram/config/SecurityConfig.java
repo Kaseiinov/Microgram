@@ -36,6 +36,8 @@ public class SecurityConfig {
 
                 .authorizeHttpRequests(authorize -> authorize
 
+//                        File
+                        .requestMatchers("/file/**").fullyAuthenticated()
 
 
                         .anyRequest().permitAll()

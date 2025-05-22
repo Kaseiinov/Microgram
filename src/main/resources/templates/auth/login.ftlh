@@ -1,3 +1,4 @@
+<#import "/spring.ftl" as spring>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -11,14 +12,15 @@
     <div class="form-section">
         <div class="form-box">
             <h1>Microgram</h1>
-            <input type="text" placeholder="Email" />
-            <input type="password" placeholder="Password" />
-            <input type="text" placeholder="First name" />
-            <input type="text" placeholder="Last name" />
-            <button>Sign up</button>
+            <@spring.formInput "userDto.email" 'id="form3Example1cg" class="form-inputs" placeholder="Email"' />
+            <@spring.showErrors "<br>" "error text-danger" />
+
+            <@spring.formInput "userDto.password" 'id="form3Example1cg" class="form-inputs" placeholder="Password"' />
+            <@spring.showErrors "<br>" "error text-danger" />
+            <button>Log In</button>
         </div>
         <div class="signup-box">
-            <p>Do you have an account? <a href="#">Sign in</a></p>
+            <p>Don't have an account? <a href="#">Sign up</a></p>
         </div>
     </div>
     <style>

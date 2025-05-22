@@ -1,9 +1,11 @@
+<#import "/spring.ftl" as spring>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Microgram</title>
+    <title>Register</title>
     <link rel="stylesheet" href="style.css" />
 </head>
 <body>
@@ -11,12 +13,22 @@
     <div class="form-section">
         <div class="form-box">
             <h1>Microgram</h1>
-            <input type="text" placeholder="Email" />
-            <input type="password" placeholder="Password" />
-            <button>Log In</button>
+            <@spring.formInput "userDto.email" 'id="form3Example1cg" class="form-inputs" placeholder="Email"' />
+            <@spring.showErrors "<br>" "error text-danger" />
+
+            <@spring.formInput "userDto.password" 'id="form3Example1cg" class="form-inputs" placeholder="Password"' />
+            <@spring.showErrors "<br>" "error text-danger" />
+
+            <@spring.formInput "userDto.firstName" 'id="form3Example1cg" class="form-inputs" placeholder="First name"' />
+            <@spring.showErrors "<br>" "error text-danger" />
+
+            <@spring.formInput "userDto.lastName" 'id="form3Example1cg" class="form-inputs" placeholder="Last name"' />
+            <@spring.showErrors "<br>" "error text-danger" />
+
+            <button>Sign up</button>
         </div>
         <div class="signup-box">
-            <p>Don't have an account? <a href="#">Sign up</a></p>
+            <p>Do you have an account? <a href="#">Sign in</a></p>
         </div>
     </div>
     <style>
@@ -67,7 +79,9 @@
             margin-bottom: 20px;
         }
 
-        input {
+
+
+        .form-inputs{
             width: 100%;
             padding: 9px;
             margin-bottom: 10px;
@@ -86,37 +100,6 @@
             font-weight: bold;
             cursor: pointer;
             margin-top: 10px;
-        }
-
-        .divider {
-            display: flex;
-            align-items: center;
-            width: 100%;
-            margin: 20px 0;
-            color: #8e8e8e;
-            font-size: 13px;
-        }
-
-        .divider::before,
-        .divider::after {
-            content: "";
-            flex: 1;
-            height: 1px;
-            background-color: #dbdbdb;
-            margin: 0 10px;
-        }
-
-        .fb-login {
-            color: #385185;
-            font-weight: bold;
-            margin: 10px 0;
-            text-decoration: none;
-        }
-
-        .forgot {
-            color: #00376b;
-            font-size: 12px;
-            text-decoration: none;
         }
 
         .signup-box {

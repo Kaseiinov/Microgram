@@ -1,7 +1,10 @@
 package kg.attractor.microgram.controller;
 
 import jakarta.validation.Valid;
+import kg.attractor.microgram.dto.CommentDto;
 import kg.attractor.microgram.dto.FileDto;
+import kg.attractor.microgram.dto.UserDto;
+import kg.attractor.microgram.service.CommentService;
 import kg.attractor.microgram.service.UserService;
 import kg.attractor.microgram.service.impl.FileServiceImpl;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +21,22 @@ import org.springframework.web.bind.annotation.*;
 public class FileController {
     private final UserService userService;
     private final FileServiceImpl fileService;
+    private final CommentService commentService;
+
+    @PostMapping("/upload/comment/{fileName}")
+    public String uploadComment(@Valid @PathVariable String fileName, CommentDto commentDto, Authentication auth, BindingResult bindingResult, Model model){
+        if(!bindingResult.hasErrors()){
+            FileDto file = fileService.findByNameDto(fileName);
+            UserDto user = userService.findByEmail(auth.getName());
+            commentDto.setUserDto(user);
+            commentDto.setFileDto(file);
+            commentService.save(commentDto);
+            return "redirect:/";
+        }
+        model.addAttribute("commentDto", commentDto);
+        return "index";
+
+    }
 
     @GetMapping("{fileName}")
     public ResponseEntity<?> findByName(@PathVariable String fileName){

@@ -1,10 +1,9 @@
 package kg.attractor.microgram.repository;
 
-import kg.attractor.microgram.model.File;
+import kg.attractor.microgram.model.Comment;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface FileRepository extends JpaRepository<File, Long> {
-    File findByFileName(String fileName);
+public interface CommentRepository extends JpaRepository<Comment, Long> {
 }

@@ -8,6 +8,8 @@ import java.util.List;
 public interface FileService {
     List<FileDto> findAllFiles();
 
+    FileDto findByNameDto(String fileName);
+
     ResponseEntity<?> findByName(String imageName);
 
     void uploadFile(FileDto fileDto);

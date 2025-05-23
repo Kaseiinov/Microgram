@@ -1,6 +1,9 @@
 package kg.attractor.microgram.service.impl;
 
+import kg.attractor.microgram.dto.CommentDto;
 import kg.attractor.microgram.dto.FileDto;
+import kg.attractor.microgram.dto.LikeDto;
+import kg.attractor.microgram.dto.UserDto;
 import kg.attractor.microgram.model.File;
 import kg.attractor.microgram.model.User;
 import kg.attractor.microgram.repository.FileRepository;
@@ -30,7 +33,33 @@ public class FileServiceImpl implements FileService {
                 .description(e.getDescription())
                 .dateTimePublished(e.getDateTimePublished())
                 .fileName(e.getFileName())
+                .comments(e.getComments().stream().map(c -> CommentDto.builder()
+                        .id(c.getId())
+                        .comment(c.getComment())
+                        .dateTimePublished(c.getDateTimePublished())
+                        .userDto(UserDto.builder()
+                                .email(c.getUser().getEmail())
+                                .build())
+                        .build()).toList())
+                .likes(e.getLikes().stream().map(l -> LikeDto.builder()
+                        .id(l.getId())
+                        .userDto(UserDto.builder()
+                                .email(l.getUser().getEmail())
+                                .build())
+                        .build()).toList())
+                .userDto(userService.findByEmail(e.getUser().getEmail()))
                 .build()).toList();
+    }
+
+    @Override
+    public FileDto findByNameDto(String fileName){
+        File file = fileRepository.findByFileName(fileName);
+        return FileDto.builder()
+                .id(file.getId())
+                .description(file.getDescription())
+                .dateTimePublished(file.getDateTimePublished())
+                .fileName(file.getFileName())
+                .build();
     }
 
     @Override

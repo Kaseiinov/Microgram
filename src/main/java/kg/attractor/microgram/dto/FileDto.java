@@ -17,6 +17,7 @@ public class FileDto {
     private Long id;
     @NotNull
     private MultipartFile multipartFile;
+    private String fileName;
     private String description;
     private UserDto userDto;
     private LocalDateTime dateTimePublished;

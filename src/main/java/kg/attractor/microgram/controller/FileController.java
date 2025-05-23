@@ -5,14 +5,12 @@ import kg.attractor.microgram.dto.FileDto;
 import kg.attractor.microgram.service.UserService;
 import kg.attractor.microgram.service.impl.FileServiceImpl;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequestMapping("file")
@@ -20,6 +18,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class FileController {
     private final UserService userService;
     private final FileServiceImpl fileService;
+
+    @GetMapping("{fileName}")
+    public ResponseEntity<?> findByName(@PathVariable String fileName){
+        return fileService.findByName(fileName);
+    }
 
     @GetMapping("upload")
     public String upload(Authentication auth, Model model){

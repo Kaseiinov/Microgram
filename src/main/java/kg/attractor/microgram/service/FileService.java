@@ -1,12 +1,15 @@
 package kg.attractor.microgram.service;
 
 import kg.attractor.microgram.dto.FileDto;
+import kg.attractor.microgram.model.File;
 import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 
 public interface FileService {
     List<FileDto> findAllFiles();
+
+    File findByNameModel(String fileName);
 
     FileDto findByNameDto(String fileName);
 

@@ -52,6 +52,11 @@ public class FileServiceImpl implements FileService {
     }
 
     @Override
+    public File findByNameModel(String fileName){
+        return fileRepository.findByFileName(fileName);
+    }
+
+    @Override
     public FileDto findByNameDto(String fileName){
         File file = fileRepository.findByFileName(fileName);
         return FileDto.builder()

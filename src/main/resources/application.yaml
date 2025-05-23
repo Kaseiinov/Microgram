@@ -2,8 +2,6 @@ spring:
   application:
     name: "Microgram"
 
-
-
   mvc:
     static-path-pattern: /static/**
   freemarker:
@@ -34,3 +32,6 @@ logging:
 server:
   tomcat:
     uri-encoding: UTF-8
+
+
+

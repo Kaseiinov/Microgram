@@ -37,6 +37,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authorize -> authorize
 
 //                        File
+                         .requestMatchers("/file/get/").permitAll()
                         .requestMatchers("/file/**").fullyAuthenticated()
                         .requestMatchers("/file/upload/comment/**").fullyAuthenticated()
 

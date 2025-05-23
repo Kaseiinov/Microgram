@@ -26,29 +26,17 @@ public class FileServiceImpl implements FileService {
     private final FileUtil fileUtil;
 
     @Override
+    public List<FileDto> findAllFilesByUser(String email){
+        List<File> files = fileRepository.findAllFilesByUser_Email(email);
+        return fileMapper(files);
+    }
+
+
+
+    @Override
     public List<FileDto> findAllFiles(){
         List<File> files = fileRepository.findAll();
-        return files.stream().map(e -> FileDto.builder()
-                .id(e.getId())
-                .description(e.getDescription())
-                .dateTimePublished(e.getDateTimePublished())
-                .fileName(e.getFileName())
-                .comments(e.getComments().stream().map(c -> CommentDto.builder()
-                        .id(c.getId())
-                        .comment(c.getComment())
-                        .dateTimePublished(c.getDateTimePublished())
-                        .userDto(UserDto.builder()
-                                .email(c.getUser().getEmail())
-                                .build())
-                        .build()).toList())
-                .likes(e.getLikes().stream().map(l -> LikeDto.builder()
-                        .id(l.getId())
-                        .userDto(UserDto.builder()
-                                .email(l.getUser().getEmail())
-                                .build())
-                        .build()).toList())
-                .userDto(userService.findByEmail(e.getUser().getEmail()))
-                .build()).toList();
+        return fileMapper(files);
     }
 
     @Override
@@ -84,5 +72,29 @@ public class FileServiceImpl implements FileService {
         file.setDescription(fileDto.getDescription());
 
         fileRepository.saveAndFlush(file);
+    }
+
+    public List<FileDto> fileMapper(List<File> files){
+        return files.stream().map(e -> FileDto.builder()
+                .id(e.getId())
+                .description(e.getDescription())
+                .dateTimePublished(e.getDateTimePublished())
+                .fileName(e.getFileName())
+                .comments(e.getComments().stream().map(c -> CommentDto.builder()
+                        .id(c.getId())
+                        .comment(c.getComment())
+                        .dateTimePublished(c.getDateTimePublished())
+                        .userDto(UserDto.builder()
+                                .email(c.getUser().getEmail())
+                                .build())
+                        .build()).toList())
+                .likes(e.getLikes().stream().map(l -> LikeDto.builder()
+                        .id(l.getId())
+                        .userDto(UserDto.builder()
+                                .email(l.getUser().getEmail())
+                                .build())
+                        .build()).toList())
+                .userDto(userService.findByEmail(e.getUser().getEmail()))
+                .build()).toList();
     }
 }

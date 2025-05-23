@@ -23,7 +23,6 @@ public class User {
     private String email;
     private String password;
     private String description;
-    private String avatar;
     private Boolean enabled;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
@@ -49,4 +48,6 @@ public class User {
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "users")
     private Collection<Role> roles;
 
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private UserImage avatar;
 }

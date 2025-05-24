@@ -1,73 +1,99 @@
 <#import "layout.ftlh" as main>
 <@main.layout ; spring>
 
-    <main class="feed">
+    <div class="row mx-auto">
         <#list files as file>
-            <div class="post mb-3">
-                <div class="post-header">
-                    <h2>${file.userDto.email}</h2>
-                </div>
-                <div class="post-image">
-                    <img src="/file/get/${file.fileName}" alt="Post image">
-                </div>
-                <div class="post-details">
-                    <div class="post-actions">
-                        <form action="/file/upload/like/${file.fileName}" method="post">
+            <div class="col-12">
+                <div class="card p-3  mb-3">
+                                                    <h3 class="card-title text-info">${file.userDto.email}</h3>
+                    <img src="/file/get/${file.fileName}" class="card-img-top post-img" alt="...">
+
+                    <div class="row mt-3 ms-2">
+                        <div class="col-1">
+                            <form action="/file/upload/like/${file.fileName}" method="post">
+                                <#if _csrf??>
+                                    <input type="hidden" name="${(_csrf.parameterName)!'csrf-param-name'}"
+                                           value="${(_csrf.token)!'csrf-token'}"/>
+                                </#if>
+                                <button type="submit" class=" text-light btn btn-link p-0 "><i class="far fa-heart"></i></button>
+                            </form>
+                        </div>
+                        <div class="col-1">
+                            <button type="button" class="button-comment text-light btn btn-link p-0" data-id="${file.id}"><i class="far fa-comment"></i></button>
+                        </div>
+
+
+                    </div>
+
+                    <div class="card-body text-light">
+                        <p class="card-text">${file.likes?size!"0"} - likes</p>
+                        <p class="card-text">${file.description!""}</p>
+
+                        <form action="/file/upload/comment/${file.fileName}" method="post">
                             <#if _csrf??>
                                 <input type="hidden" name="${(_csrf.parameterName)!'csrf-param-name'}"
                                        value="${(_csrf.token)!'csrf-token'}"/>
                             </#if>
-                            <button type="submit" ><i class="far fa-heart"></i></button>
+                            <div class="add-comment">
+                                <@spring.formInput "commentDto.comment" 'id="form3Example1cg" class="form-control text-light comment-input mb-3 bg-dark" placeholder="Add comment..."' />
+                                <@spring.showErrors "<br>" "error text-danger" />
+                                <button type="submit" class="btn btn-light mb-2">Save comment</button>
+                            </div>
                         </form>
 
-                        <button type="button" class="button-comment"><i class="far fa-comment"></i></button>
-                    </div>
-                    <div class="likes">
-                        <strong>${file.likes?size!"0"} likes</strong>
-                    </div>
-                    <div class="post-text">
-                        <p class="description">${file.description!""}</p>
-                    </div>
-                    <form action="/file/upload/comment/${file.fileName}" method="post">
-                        <#if _csrf??>
-                            <input type="hidden" name="${(_csrf.parameterName)!'csrf-param-name'}"
-                                   value="${(_csrf.token)!'csrf-token'}"/>
-                        </#if>
-                        <div class="add-comment">
-                            <@spring.formInput "commentDto.comment" 'id="form3Example1cg" class="comment-input" placeholder="Add comment..."' />
-                            <@spring.showErrors "<br>" "error text-danger" />
-                            <button type="submit" class="btn btn-primary">Save comment</button>
+                        <div class="comments-${file.id} d-none">
+                            <#if file.comments??>
+                                <#list file.comments as comment>
+                                    <div class="card-comment">
+                                        <p class="comment-author">${comment.userDto.email}</p>
+                                        <p class="comment-text">${comment.comment}</p>
+                                    </div>
+                                </#list>
+                            </#if>
                         </div>
-                    </form>
-                    <div class="comments">
-                        <#if file.comments??>
-                            <#list file.comments as comment>
-                                <div class="card-comment">
-                                    <p class="comment-author">${comment.userDto.email}</p>
-                                    <p class="comment-text">${comment.comment}</p>
-                                </div>
-
-                            </#list>
-                        </#if>
                     </div>
-
                 </div>
             </div>
         </#list>
-    </main>
+    </div>
+
+
 
     <script>
-        $(document).ready(() => {
-            let comment = $('.comments').hide();
+        window.onload = function () {
+            document.querySelectorAll('.button-comment').forEach(button => {
+                button.addEventListener('click', function () {
+                    let id = this.getAttribute('data-id');
+                    let comments = document.querySelector('.comments-' + id);
 
-            $('.button-comment').on('click', () => {
-                comment.toggle();
-            });
-        });
+                    if(comments.classList.contains('d-none')){
+                        comments.classList.remove('d-none');
+                    }else{
+                        comments.classList.add('d-none');
+                    }
+                })
+            })
+        }
     </script>
 
 
     <style>
+
+        .post-img {
+            height: 350px;
+            object-fit: cover;
+            width: 100%;
+        }
+
+        .container-fluid{
+            background-color: #000;
+            color: #fff;
+        }
+
+        .card{
+            background-color: #000 !important;
+            width: 75%;
+        }
         .comment-input{
             width: 100%;
             background: transparent;

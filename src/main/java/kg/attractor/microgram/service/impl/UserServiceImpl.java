@@ -49,7 +49,7 @@ public class UserServiceImpl implements UserService {
                 .lastName(user.getLastName())
                 .email(user.getEmail())
                 .password(user.getPassword())
-                .avatar(avatar) // Null-safe avatar handling
+                .avatar(avatar)
                 .build();
     }
 

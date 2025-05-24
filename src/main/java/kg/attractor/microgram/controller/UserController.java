@@ -1,5 +1,6 @@
 package kg.attractor.microgram.controller;
 
+import kg.attractor.microgram.dto.CommentDto;
 import kg.attractor.microgram.dto.UserDto;
 import kg.attractor.microgram.model.User;
 import kg.attractor.microgram.service.FileService;
@@ -28,6 +29,8 @@ public class UserController {
         model.addAttribute("posts", fileService.findAllFilesByUser(userName).size());
         model.addAttribute("followers", user.getFollowers().size());
         model.addAttribute("following", user.getSubscriptions().size());
+        model.addAttribute("files", fileService.findAllFilesByUser(userName));
+        model.addAttribute("commentDto", new CommentDto());
         System.out.println(fileService.findAllFilesByUser(userName).size());
         return "user/profile";
     }

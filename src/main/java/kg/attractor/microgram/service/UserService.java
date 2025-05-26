@@ -8,6 +8,8 @@ import javax.management.relation.RoleNotFoundException;
 import java.util.List;
 
 public interface UserService {
+    void follow(String followTo, String follower);
+
     List<UserDto> findAllUsersLike(String name);
 
     UserDto findByEmail(String email);

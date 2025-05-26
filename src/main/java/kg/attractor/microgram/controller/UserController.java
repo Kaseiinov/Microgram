@@ -65,4 +65,10 @@ public class UserController {
         return "user/profile";
     }
 
+    @PostMapping("follow")
+    public String follow(@RequestParam String follow, Authentication auth){
+        userService.follow(follow, auth.getName());
+        return "redirect:/user/profile?name=" + follow;
+    }
+
 }

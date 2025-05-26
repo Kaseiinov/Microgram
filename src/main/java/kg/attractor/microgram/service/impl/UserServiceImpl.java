@@ -1,5 +1,6 @@
 package kg.attractor.microgram.service.impl;
 
+import jakarta.transaction.Transactional;
 import kg.attractor.microgram.dto.UserDto;
 import kg.attractor.microgram.dto.UserImageDto;
 import kg.attractor.microgram.exceptions.SuchEmailAlreadyExistsException;
@@ -25,6 +26,17 @@ public class UserServiceImpl implements UserService {
     private final RoleService roleService;
     private final PasswordEncoder encoder;
 
+
+    @Override
+    @Transactional
+    public void follow(String followTo, String follower){
+        User followToUser = userRepository.findByEmail(followTo).orElseThrow(UserNotFoundException::new);
+        User followerUser = userRepository.findByEmail(follower).orElseThrow(UserNotFoundException::new);
+
+        followerUser.follow(followToUser);
+//        userRepository.save(followToUser);
+        userRepository.save(followerUser);
+    }
 
     @Override
     public List<UserDto> findAllUsersLike(String name) {

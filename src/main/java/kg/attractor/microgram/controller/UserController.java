@@ -30,14 +30,7 @@ public class UserController {
         }
         User user = userService.findByEmailModel(userName);
         UserDto userDto = userService.findByEmail(userName);
-        model.addAttribute("isCurrent", true);
-        model.addAttribute("userDto", userDto);
-        model.addAttribute("posts", fileService.findAllFilesByUser(userName).size());
-        model.addAttribute("followers", user.getFollowers().size());
-        model.addAttribute("following", user.getSubscriptions().size());
-        model.addAttribute("files", fileService.findAllFilesByUser(userName));
-        model.addAttribute("commentDto", new CommentDto());
-        System.out.println(fileService.findAllFilesByUser(userName).size());
+        prepareModelForProfile(user, true, false, model);
         return "user/profile";
     }
 
@@ -49,19 +42,24 @@ public class UserController {
     }
 
     @GetMapping("searched")
-    public String anotherProfile(@RequestParam String name, Model model){
+    public String anotherProfile(@RequestParam String name, Authentication auth, Model model){
+        boolean isCurrent = false;
+        boolean isFollowed = false;
 
+        User follower = userService.findByEmailModel(auth.getName());
         User user = userService.findByEmailModel(name);
         UserDto userDto = userService.findByEmail(name);
 
-        model.addAttribute("isCurrent", false);
-        model.addAttribute("userDto", userDto);
-        model.addAttribute("posts", fileService.findAllFilesByUser(name).size());
-        model.addAttribute("followers", user.getFollowers().size());
-        model.addAttribute("following", user.getSubscriptions().size());
-        model.addAttribute("files", fileService.findAllFilesByUser(name));
-        model.addAttribute("commentDto", new CommentDto());
-        System.out.println(fileService.findAllFilesByUser(name).size());
+        if(auth.getName() != null && !auth.getName().isEmpty()){
+            if(auth.getName().equals(name)){
+                isCurrent = true;
+            }
+            if(follower.isFollowing(user)){
+                isFollowed = true;
+            }
+        }
+
+        prepareModelForProfile(user, isCurrent, isFollowed, model);
         return "user/profile";
     }
 
@@ -70,5 +68,25 @@ public class UserController {
         userService.follow(follow, auth.getName());
         return "redirect:/user/profile?name=" + follow;
     }
+
+    @PostMapping("unFollow")
+    public String unFollow(@RequestParam String follow, Authentication auth){
+        userService.unFollow(follow, auth.getName());
+        return "redirect:/user/profile?name=" + follow;
+    }
+
+    private void prepareModelForProfile(User user, boolean isCurrent, boolean isFollowed, Model model) {
+        UserDto userDto = userService.findByEmail(user.getEmail());
+        model.addAttribute("isCurrent", isCurrent);
+        model.addAttribute("isFollowed", isFollowed);
+        model.addAttribute("userDto", userDto);
+        model.addAttribute("posts", fileService.findAllFilesByUser(user.getEmail()).size());
+        model.addAttribute("followers", user.getFollowers().size());
+        model.addAttribute("following", user.getSubscriptions().size());
+        model.addAttribute("files", fileService.findAllFilesByUser(user.getEmail()));
+        model.addAttribute("commentDto", new CommentDto());
+    }
+
+
 
 }

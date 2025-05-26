@@ -29,17 +29,33 @@
                         </div>
                     </div>
                 <#if !isCurrent>
-                    <form action="/user/follow" method="post" >
+                    <#if isFollowed??>
+                        <#if  isFollowed>
+                            <form action="/user/unFollow" method="post" >
 
-                        <#if _csrf??>
-                            <input type="hidden" name="${(_csrf.parameterName)!'csrf-param-name'}"
-                                   value="${(_csrf.token)!'csrf-token'}"/>
+                                <#if _csrf??>
+                                    <input type="hidden" name="${(_csrf.parameterName)!'csrf-param-name'}"
+                                           value="${(_csrf.token)!'csrf-token'}"/>
+                                </#if>
+
+                                <input type="hidden" name="follow" value="${userDto.email}">
+                                <button  type="submit" class="btn btn-primary">unfollow</button>
+
+                            </form>
+                        <#else>
+                            <form action="/user/follow" method="post" >
+
+                                <#if _csrf??>
+                                    <input type="hidden" name="${(_csrf.parameterName)!'csrf-param-name'}"
+                                           value="${(_csrf.token)!'csrf-token'}"/>
+                                </#if>
+
+                                <input type="hidden" name="follow" value="${userDto.email}">
+                                <button  type="submit" class="btn btn-primary">Follow</button>
+
+                            </form>
                         </#if>
-
-                        <input type="hidden" name="follow" value="${userDto.email}">
-                        <button  type="submit" class="btn btn-primary">Follow</button>
-
-                    </form>
+                    </#if>
                 </#if>
 
             </div>

@@ -6,6 +6,7 @@ import kg.attractor.microgram.model.User;
 import kg.attractor.microgram.service.FileService;
 import kg.attractor.microgram.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.boot.context.properties.bind.DefaultValue;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,7 +22,7 @@ public class UserController {
     private final FileService fileService;
 
     @GetMapping("profile")
-    public String profile(@RequestParam String name, Authentication auth, Model model){
+    public String profile(@RequestParam(defaultValue = "") String name, Authentication auth, Model model){
         String userName;
         if(name != null && !name.isEmpty()){
             userName = name;

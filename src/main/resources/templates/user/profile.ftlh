@@ -1,7 +1,7 @@
 <#import "../layout.ftlh" as main>
 <link rel="stylesheet" href="../../static/css/profile.css">
 <@main.layout ; spring>
-    <div class="container-fluid">
+    <div class="container-fluid" style="margin-left: 250px">
         <div class="row my-5 ms-3">
             <div class="col col-12">
                 <div class="row align-items-center mb-2">
@@ -28,6 +28,10 @@
                             <p>${userDto.description!""}</p>
                         </div>
                     </div>
+                <#if !isCurrent>
+                    <button type="button" class="btn btn-primary">Follow</button>
+                </#if>
+
             </div>
 
             <div class="text-between lead">

@@ -25,10 +25,29 @@ public class UserServiceImpl implements UserService {
     private final RoleService roleService;
     private final PasswordEncoder encoder;
 
-//    @Override
-//    public List<UserDto> findAllFollowersByUser(String email){
-//        List<User> users = userRepository.findAllSu
-//    }
+
+    @Override
+    public List<UserDto> findAllUsersLike(String name) {
+        List<User> users = userRepository.findAllByEmailContainingIgnoreCase(name);
+
+        return users.stream()
+                .map(user -> UserDto.builder()
+                        .id(user.getId())
+                        .firstName(user.getFirstName())
+                        .lastName(user.getLastName())
+                        .email(user.getEmail())
+                        .password(user.getPassword())
+                        .avatar(user.getAvatar() != null ?
+                                UserImageDto.builder()
+                                        .id(user.getAvatar().getId())
+                                        .fileName(user.getAvatar().getFileName())
+                                        .userId(user.getId())
+                                        .build()
+                                : null)
+                        .build())
+                .toList();
+    }
+
 
     @Override
     public UserDto findByEmail(String email) {

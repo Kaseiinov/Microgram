@@ -1,7 +1,7 @@
 <#import "layout.ftlh" as main>
 <@main.layout ; spring>
 
-    <div class="row mx-auto">
+    <div class="row mx-auto" style="margin-left: 250px !important;">
         <#list files as file>
             <div class="col-12">
                 <div class="card p-3  mb-3">
@@ -10,12 +10,12 @@
 
                     <div class="row mt-3 ms-2">
                         <div class="col-1">
-                            <form action="/file/upload/like/${file.fileName}" method="post">
+                            <form id="heard-form" action="/file/upload/like/${file.fileName}" method="post">
                                 <#if _csrf??>
                                     <input type="hidden" name="${(_csrf.parameterName)!'csrf-param-name'}"
                                            value="${(_csrf.token)!'csrf-token'}"/>
                                 </#if>
-                                <button type="submit" class=" text-light btn btn-link p-0 "><i class="far fa-heart"></i></button>
+                                <button type="submit" class="btn-heart text-light btn btn-link p-0 "><i class="far fa-heart"></i></button>
                             </form>
                         </div>
                         <div class="col-1">
@@ -66,14 +66,15 @@
                     let id = this.getAttribute('data-id');
                     let comments = document.querySelector('.comments-' + id);
 
-                    if(comments.classList.contains('d-none')){
+                    if (comments.classList.contains('d-none')) {
                         comments.classList.remove('d-none');
-                    }else{
+                    } else {
                         comments.classList.add('d-none');
                     }
                 })
             })
         }
+
     </script>
 
 

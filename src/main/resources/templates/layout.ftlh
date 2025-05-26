@@ -14,26 +14,29 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 </head>
 <body>
+
+<#assign known = SPRING_SECURITY_CONTEXT?? >
+<#if known>
+    <#assign
+    user = SPRING_SECURITY_CONTEXT.authentication.principal
+    name = user.getUsername()
+    >
+</#if>
 <div class="my-container">
-    <aside class="sidebar">
+    <aside class="sidebar position-fixed top-0 left-0 vh-100 bg-dark text-white p-3 ">
         <div class="logo">Microgram</div>
         <nav class="menu">
+
             <a href="/"><i class="fas fa-home"></i> Home</a>
-            <a href="#"><i class="fas fa-search"></i> Search</a>
+            <a href="/user/search"><i class="fas fa-search"></i> Search</a>
             <a href="#"><i class="fas fa-compass"></i> Explore</a>
             <a href="/file/upload"><i class="fas fa-plus-square"></i> Create</a>
-            <a href="/user/profile"><img src="" class="profile-pic"> Profile</a>
+            <a href="/user/profile?name="><img src="" class="profile-pic"> Profile</a>
         </nav>
     </aside>
 
 
-    <#assign known = SPRING_SECURITY_CONTEXT?? >
-    <#if known>
-        <#assign
-        user = SPRING_SECURITY_CONTEXT.authentication.principal
-        name = user.getUsername()
-        >
-    </#if>
+
 
     <#nested spring>
 

@@ -1,10 +1,9 @@
 package kg.attractor.microgram.controller;
 
 import jakarta.validation.Valid;
-import kg.attractor.microgram.dto.CommentDto;
-import kg.attractor.microgram.dto.FileDto;
-import kg.attractor.microgram.dto.LikeDto;
-import kg.attractor.microgram.dto.UserDto;
+import kg.attractor.microgram.dto.*;
+import kg.attractor.microgram.model.Comment;
+import kg.attractor.microgram.model.File;
 import kg.attractor.microgram.service.CommentService;
 import kg.attractor.microgram.service.LikeService;
 import kg.attractor.microgram.service.UserService;
@@ -16,6 +15,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("file")
@@ -43,6 +48,33 @@ public class FileController {
 
     }
 
+    @GetMapping("getComments")
+    public ResponseEntity<?> getComments(@RequestParam String fileName){
+        File file = fileService.findByNameModel(fileName);
+        System.out.println(file.getComments().size());
+
+        List<CommentWithUserDto> comments = file.getComments().stream()
+                .map(c -> new CommentWithUserDto(
+                        c.getUser().getEmail(),
+                        c.getComment()
+                ))
+                .toList();
+
+        return ResponseEntity.ok(Map.of("comments", comments));
+    }
+
+    @GetMapping("like/count")
+//    @ResponseBody
+    public ResponseEntity<?> getCountOfLikes(@RequestParam String fileName){
+        File file = fileService.findByNameModel(fileName);
+        int likeCount = (file != null && file.getLikes() != null) ? file.getLikes().size() : 0;
+
+        Map<String, Integer> response = new HashMap<>();
+        response.put("likes", likeCount);
+
+        return ResponseEntity.ok(response);
+    }
+
     @PostMapping("/upload/like/{fileName}")
     public String uploadLike(LikeDto likeDto, @PathVariable String fileName, Authentication auth, Model model){
         FileDto file = fileService.findByNameDto(fileName);
@@ -53,6 +85,8 @@ public class FileController {
         return "redirect:/";
 
     }
+
+
 
     @GetMapping("get/{fileName}")
     public ResponseEntity<?> findByName(@PathVariable String fileName){

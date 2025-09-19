@@ -75,7 +75,7 @@
 
                                 <div class="row mt-3 ms-2">
                                     <div class="col-1">
-                                        <form action="/file/upload/like/${file.fileName}" method="post">
+                                        <form data-fileName="${file.fileName}" class="heard-form" action="/file/upload/like/${file.fileName}" method="post">
                                             <#if _csrf??>
                                                 <input type="hidden" name="${(_csrf.parameterName)!'csrf-param-name'}"
                                                        value="${(_csrf.token)!'csrf-token'}"/>
@@ -91,7 +91,7 @@
                                 </div>
 
                                 <div class="card-body">
-                                    <p class="card-text">${file.likes?size!"0"} - likes</p>
+                                    <p class="card-text like-count" data-fileName="${file.fileName}">${file.likes?size!"0"} - likes</p>
                                     <p class="card-text">${file.description!""}</p>
 
                                     <form action="/file/upload/comment/${file.fileName}" method="post">
@@ -125,22 +125,7 @@
         </div>
     </div>
 
-    <script>
-        window.onload = function () {
-            document.querySelectorAll('.button-comment').forEach(button => {
-                button.addEventListener('click', function () {
-                    let id = this.getAttribute('data-id');
-                    let comments = document.querySelector('.comments-' + id);
-
-                    if(comments.classList.contains('d-none')){
-                        comments.classList.remove('d-none');
-                    }else{
-                        comments.classList.add('d-none');
-                    }
-                })
-            })
-        }
-    </script>
+    <script src="../../static/js/main.js"></script>
 
 
 

@@ -10,7 +10,7 @@
 
                     <div class="row mt-3 ms-2">
                         <div class="col-1">
-                            <form id="heard-form" action="/file/upload/like/${file.fileName}" method="post">
+                            <form class="heard-form" data-fileName="${file.fileName}" action="/file/upload/like/${file.fileName}" method="post">
                                 <#if _csrf??>
                                     <input type="hidden" name="${(_csrf.parameterName)!'csrf-param-name'}"
                                            value="${(_csrf.token)!'csrf-token'}"/>
@@ -26,10 +26,10 @@
                     </div>
 
                     <div class="card-body text-light">
-                        <p class="card-text">${file.likes?size!"0"} - likes</p>
+                        <p class="card-text like-count" data-fileName="${file.fileName}">${file.likes?size!"0"} - likes</p>
                         <p class="card-text">${file.description!""}</p>
 
-                        <form action="/file/upload/comment/${file.fileName}" method="post">
+                        <form class="comment-form" data-fileName="${file.fileName}" action="/file/upload/comment/${file.fileName}" method="post">
                             <#if _csrf??>
                                 <input type="hidden" name="${(_csrf.parameterName)!'csrf-param-name'}"
                                        value="${(_csrf.token)!'csrf-token'}"/>
@@ -41,7 +41,8 @@
                             </div>
                         </form>
 
-                        <div class="comments-${file.id} d-none">
+
+                        <div data-id="${file.id}" class="comments-${file.id} d-none comments-card">
                             <#if file.comments??>
                                 <#list file.comments as comment>
                                     <div class="card-comment">
@@ -59,23 +60,7 @@
 
 
 
-    <script>
-        window.onload = function () {
-            document.querySelectorAll('.button-comment').forEach(button => {
-                button.addEventListener('click', function () {
-                    let id = this.getAttribute('data-id');
-                    let comments = document.querySelector('.comments-' + id);
-
-                    if (comments.classList.contains('d-none')) {
-                        comments.classList.remove('d-none');
-                    } else {
-                        comments.classList.add('d-none');
-                    }
-                })
-            })
-        }
-
-    </script>
+    <script src="../static/js/main.js"> </script>
 
 
     <style>

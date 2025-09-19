@@ -20,19 +20,16 @@ public class LikeServiceImpl implements LikeService {
 
     @Override
     public void saveOrDeleteLike(LikeDto likeDto) {
-        // Проверяем, есть ли лайк пользователя для данного файла
         Optional<Like> existingLike = likeRepository.findByFile_FileNameAndUser_Email(
                 likeDto.getFileDto().getFileName(),
                 likeDto.getUserDto().getEmail()
         );
 
-        // Если лайк уже есть, удаляем его
         if (existingLike.isPresent()) {
             likeRepository.delete(existingLike.get());
             return;
         }
 
-        // Если лайка не было, создаём новый лайк
         Like like = new Like();
         like.setFile(fileService.findByNameModel(likeDto.getFileDto().getFileName()));
         like.setUser(userService.findByEmailModel(likeDto.getUserDto().getEmail()));

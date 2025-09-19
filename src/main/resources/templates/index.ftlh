@@ -2,29 +2,33 @@
 <@main.layout ; spring>
 
     <main class="feed">
-        <div class="post">
-            <div class="post-header">
-                <img src="https://via.placeholder.com/32" class="profile-pic">
+        <#list files as file>
+            <div class="post">
+                <div class="post-header">
+                    <a href="/user/profile/${file.userDto.email}">
+                        <img src="https://via.placeholder.com/32" class="profile-pic">
+                    </a>
+                </div>
+                <div class="post-image">
+                    <img src="/file/${file.fileName}" alt="Post image">
+                </div>
+                <div class="post-details">
+                    <div class="post-actions">
+                        <i class="far fa-heart"></i>
+                        <i class="far fa-comment"></i>
+                    </div>
+                    <div class="likes">
+                        <strong>3,324 likes</strong>
+                    </div>
+                    <div class="post-text">
+                        <p class="description">${file.description!""}</p>
+                    </div>
+                    <div class="add-comment">
+                        <input type="text" placeholder="Add a comment..." style="width: 100%; background: transparent; border: none; color: #fff; padding: 10px 0;">
+                    </div>
+                </div>
             </div>
-            <div class="post-image">
-                <img src="image.png" alt="Post image">
-            </div>
-            <div class="post-details">
-                <div class="post-actions">
-                    <i class="far fa-heart"></i>
-                    <i class="far fa-comment"></i>
-                </div>
-                <div class="likes">
-                    <strong>3,324 likes</strong>
-                </div>
-                <div class="post-text">
-                    <p class="description">description</p>
-                </div>
-                <div class="add-comment">
-                    <input type="text" placeholder="Add a comment..." style="width: 100%; background: transparent; border: none; color: #fff; padding: 10px 0;">
-                </div>
-            </div>
-        </div>
+        </#list>
     </main>
 
     <style>

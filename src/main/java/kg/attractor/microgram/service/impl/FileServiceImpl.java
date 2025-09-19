@@ -32,6 +32,11 @@ public class FileServiceImpl implements FileService {
     }
 
 
+    @Override
+    public List<FileDto> findAllFilesByUserFollowing(String email){
+        List<File> files = fileRepository.findAllFilesByUserFollowing(email);
+        return fileMapper(files);
+    }
 
     @Override
     public List<FileDto> findAllFiles(){

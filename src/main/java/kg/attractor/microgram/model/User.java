@@ -57,6 +57,10 @@ public class User {
         user.getFollowers().remove(this);
     }
 
+    public boolean isFollowing(User user) {
+        return subscriptions.contains(user);
+    }
+
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "users")
     private Collection<Role> roles;
 

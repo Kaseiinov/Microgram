@@ -33,9 +33,24 @@ public class UserServiceImpl implements UserService {
         User followToUser = userRepository.findByEmail(followTo).orElseThrow(UserNotFoundException::new);
         User followerUser = userRepository.findByEmail(follower).orElseThrow(UserNotFoundException::new);
 
-        followerUser.follow(followToUser);
-//        userRepository.save(followToUser);
-        userRepository.save(followerUser);
+        if(!followTo.equals(follower) && !followerUser.getSubscriptions().contains(followToUser)){
+            followerUser.follow(followToUser);
+            userRepository.save(followerUser);
+        }
+
+    }
+
+    @Transactional
+    @Override
+    public void unFollow(String followTo, String follower){
+        User followToUser = userRepository.findByEmail(followTo).orElseThrow(UserNotFoundException::new);
+        User followerUser = userRepository.findByEmail(follower).orElseThrow(UserNotFoundException::new);
+
+        if(!followTo.equals(follower) && followerUser.getSubscriptions().contains(followToUser)){
+            followerUser.unfollow(followToUser);
+            userRepository.save(followerUser);
+        }
+
     }
 
     @Override

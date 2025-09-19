@@ -19,9 +19,6 @@ databaseChangeLog:
                   name: last_name
                   type: VARCHAR(50)
               - column:
-                  name: login
-                  type: VARCHAR(50)
-              - column:
                   name: email
                   type: VARCHAR
               - column:
@@ -33,6 +30,11 @@ databaseChangeLog:
               - column:
                   name: description
                   type: VARCHAR(200)
+              - column:
+                  name: enabled
+                  type: boolean
+                  constraints:
+                    nullable: false
 
         - createTable:
             tableName: files

@@ -5,8 +5,11 @@ import kg.attractor.microgram.exceptions.SuchEmailAlreadyExistsException;
 import kg.attractor.microgram.model.User;
 
 import javax.management.relation.RoleNotFoundException;
+import java.util.List;
 
 public interface UserService {
+    List<UserDto> findAllUsersLike(String name);
+
     UserDto findByEmail(String email);
 
     User findByEmailModel(String email);

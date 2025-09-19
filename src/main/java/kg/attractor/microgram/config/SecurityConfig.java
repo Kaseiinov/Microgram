@@ -38,6 +38,7 @@ public class SecurityConfig {
 
 //                        File
                         .requestMatchers("/file/**").fullyAuthenticated()
+                        .requestMatchers("/file/upload/comment/**").fullyAuthenticated()
 
 
                         .anyRequest().permitAll()

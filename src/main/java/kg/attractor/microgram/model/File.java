@@ -1,16 +1,19 @@
 package kg.attractor.microgram.model;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.Collection;
+import java.util.List;
 
 @Getter
 @Setter
+@Builder
 @Entity
 @Table(name = "files")
+@NoArgsConstructor
+@AllArgsConstructor
 public class File {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,8 +29,8 @@ public class File {
     private User user;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "file", cascade = CascadeType.REMOVE, orphanRemoval = true)
-    private Collection<Comment> comments;
+    private List<Comment> comments;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "file", cascade = CascadeType.REMOVE, orphanRemoval = true)
-    private Collection<Like> likes;
+    private List<Like> likes;
 }

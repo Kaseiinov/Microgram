@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 @Builder
@@ -21,4 +22,6 @@ public class FileDto {
     private String description;
     private UserDto userDto;
     private LocalDateTime dateTimePublished;
+    private List<CommentDto> comments;
+    private List<LikeDto> likes;
 }

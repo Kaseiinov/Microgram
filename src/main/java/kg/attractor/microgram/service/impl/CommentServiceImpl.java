@@ -31,14 +31,19 @@ public class CommentServiceImpl implements CommentService {
                 .dateTimePublished(commentDto.getFileDto().getDateTimePublished())
                 .build());
 
+        UserImage userImage = null;
+        if (commentDto.getUserDto().getAvatar() != null) {
+            userImage = UserImage.builder()
+                    .id(commentDto.getUserDto().getAvatar().getId())
+                    .fileName(commentDto.getUserDto().getAvatar().getFileName())
+                    .build();
+        }
+
         User user = User.builder()
                 .id(commentDto.getUserDto().getId())
                 .email(commentDto.getUserDto().getEmail())
                 .description(commentDto.getUserDto().getDescription())
-                .avatar(UserImage.builder()
-                        .id(commentDto.getUserDto().getAvatar().getId())
-                        .fileName(commentDto.getUserDto().getAvatar().getFileName())
-                        .build())
+                .avatar(userImage)
                 .firstName(commentDto.getUserDto().getFirstName())
                 .lastName(commentDto.getUserDto().getLastName())
                 .password(commentDto.getUserDto().getPassword())

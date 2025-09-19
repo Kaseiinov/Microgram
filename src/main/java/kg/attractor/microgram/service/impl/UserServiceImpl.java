@@ -23,7 +23,7 @@ public class UserServiceImpl implements UserService {
     private final PasswordEncoder encoder;
 
     @Override
-    public void addUser(UserDto userDto) throws SuchEmailAlreadyExistsException, RoleNotFoundException {
+    public void addUser(UserDto userDto) throws SuchEmailAlreadyExistsException{
 
         boolean isUserExists = userRepository.existsUserByEmail(userDto.getEmail());
         if(isUserExists){
@@ -38,7 +38,7 @@ public class UserServiceImpl implements UserService {
         user.setPassword(encoder.encode(userDto.getPassword()));
         user.setEnabled(true);
 
-        Role role = roleService.findRoleByRole("role");
+        Role role = roleService.findRoleByRole("USER");
 
         user.setRoles(Collections.singletonList(role));
         role.setUsers(List.of(user));

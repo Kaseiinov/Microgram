@@ -5,22 +5,28 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Microgram</title>
-    <link rel="stylesheet" href="style.css" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 </head>
 <body>
-<div class="container">
+<div class="my-container">
     <div class="form-section">
         <div class="form-box">
             <h1>Microgram</h1>
-            <@spring.formInput "userDto.email" 'id="form3Example1cg" class="form-inputs" placeholder="Email"' />
-            <@spring.showErrors "<br>" "error text-danger" />
 
-            <@spring.formInput "userDto.password" 'id="form3Example1cg" class="form-inputs" placeholder="Password"' />
-            <@spring.showErrors "<br>" "error text-danger" />
-            <button>Log In</button>
+            <form action="/auth/login" method="post">
+                <#if _csrf??>
+                    <input type="hidden" name="${(_csrf.parameterName)!'csrf-param-name'}"
+                           value="${(_csrf.token)!'csrf-token'}"/>
+                </#if>
+
+                <input type="email" id="form2Example1" class="form-control" placeholder="Email" name="username"/>
+                <input type="password" id="form2Example1" class="form-control" placeholder="Password" name="password"/>
+
+                <button>Log In</button>
+            </form>
         </div>
         <div class="signup-box">
-            <p>Don't have an account? <a href="#">Sign up</a></p>
+            <p>Don't have an account? <a href="/auth/register">Sign up</a></p>
         </div>
     </div>
     <style>
@@ -39,7 +45,7 @@
             min-height: 100vh;
         }
 
-        .container {
+        .my-container {
             display: flex;
             align-items: center;
             gap: 40px;

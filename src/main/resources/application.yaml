@@ -1,0 +1,30 @@
+spring:
+  application:
+    name: "Microgram"
+
+  mvc:
+    static-path-pattern: /static/**
+  freemarker:
+    expose-session-attributes: true
+
+  datasource:
+    url: jdbc:h2:./db/JobSearchDB;AUTO_SERVER=TRUE
+    username: root
+    password: qwerty
+    driver-class-name: org.h2.Driver
+
+    liquibase:
+      change-log: classpath:/db/changelog/master.yml
+    jpa:
+      hibernate:
+        ddl-auto: validate
+
+
+logging:
+  level:
+    root: info
+    org:
+      springframework:
+        security: debug
+  file:
+    path: logs

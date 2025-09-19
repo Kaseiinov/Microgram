@@ -7,6 +7,8 @@ import org.springframework.http.ResponseEntity;
 import java.util.List;
 
 public interface FileService {
+    List<FileDto> findAllFilesByUser(String email);
+
     List<FileDto> findAllFiles();
 
     File findByNameModel(String fileName);

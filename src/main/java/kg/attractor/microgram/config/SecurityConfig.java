@@ -36,6 +36,9 @@ public class SecurityConfig {
 
                 .authorizeHttpRequests(authorize -> authorize
 
+//                        User
+                          .requestMatchers("user/**").fullyAuthenticated()
+
 //                        File
                          .requestMatchers("/file/get/").permitAll()
                         .requestMatchers("/file/**").fullyAuthenticated()

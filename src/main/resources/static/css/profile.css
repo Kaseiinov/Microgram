@@ -1,16 +1,9 @@
-body {
-    background-color: #000;
-    color: white;
-    font-family: Arial, sans-serif;
-    display: flex;
-    justify-content: center;
-    padding-top: 50px;
-}
+
 .profile-container {
     width: 100%;
     max-width: 800px;
     display: flex;
-    align-items: center;
+    /*align-items: center;*/
     gap: 30px;
     padding: 0 20px;
 }

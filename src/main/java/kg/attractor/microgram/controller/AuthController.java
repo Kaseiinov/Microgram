@@ -1,8 +1,10 @@
 package kg.attractor.microgram.controller;
 
 import jakarta.validation.Valid;
+import kg.attractor.microgram.dto.FileDto;
 import kg.attractor.microgram.dto.UserDto;
 import kg.attractor.microgram.exceptions.SuchEmailAlreadyExistsException;
+import kg.attractor.microgram.service.FileService;
 import kg.attractor.microgram.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -19,6 +21,7 @@ import javax.management.relation.RoleNotFoundException;
 @RequiredArgsConstructor
 public class AuthController {
     private final UserService userService;
+    private final FileService fileService;
 
     @GetMapping("register")
     public String register(Model model){

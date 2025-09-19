@@ -1,13 +1,16 @@
 package kg.attractor.microgram.service.impl;
 
 import kg.attractor.microgram.dto.UserDto;
+import kg.attractor.microgram.dto.UserImageDto;
 import kg.attractor.microgram.exceptions.SuchEmailAlreadyExistsException;
 import kg.attractor.microgram.exceptions.UserNotFoundException;
 import kg.attractor.microgram.model.Role;
 import kg.attractor.microgram.model.User;
+import kg.attractor.microgram.model.UserImage;
 import kg.attractor.microgram.repository.UserRepository;
 import kg.attractor.microgram.service.RoleService;
 import kg.attractor.microgram.service.UserService;
+import kg.attractor.microgram.utils.FileUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -22,18 +25,34 @@ public class UserServiceImpl implements UserService {
     private final RoleService roleService;
     private final PasswordEncoder encoder;
 
+//    @Override
+//    public List<UserDto> findAllFollowersByUser(String email){
+//        List<User> users = userRepository.findAllSu
+//    }
+
     @Override
-    public UserDto findByEmail(String email){
+    public UserDto findByEmail(String email) {
         User user = userRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
+
+        UserImageDto avatar = null;
+        if (user.getAvatar() != null) {
+            avatar = UserImageDto.builder()
+                    .id(user.getAvatar().getId())
+                    .fileName(user.getAvatar().getFileName())
+                    .userId(user.getId())
+                    .build();
+        }
+
         return UserDto.builder()
                 .id(user.getId())
                 .firstName(user.getFirstName())
                 .lastName(user.getLastName())
                 .email(user.getEmail())
                 .password(user.getPassword())
-                .avatar(user.getAvatar())
+                .avatar(avatar) // Null-safe avatar handling
                 .build();
     }
+
 
     @Override
     public User findByEmailModel(String email){
@@ -43,11 +62,15 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void addUser(UserDto userDto) throws SuchEmailAlreadyExistsException{
+        FileUtil fileUtil = new FileUtil();
+        String filename = fileUtil.saveUploadFile(userDto.getAvatar().getFile(), "images/");
 
         boolean isUserExists = userRepository.existsUserByEmail(userDto.getEmail());
         if(isUserExists){
             throw new SuchEmailAlreadyExistsException();
         }
+
+
 
         User user = new User();
         user.setId(userDto.getId());
@@ -61,6 +84,12 @@ public class UserServiceImpl implements UserService {
 
         user.setRoles(Collections.singletonList(role));
         role.setUsers(List.of(user));
+
+        UserImage userImage = new UserImage();
+        userImage.setUser(user);
+        userImage.setFileName(filename);
+
+        user.setAvatar(userImage);
 
         userRepository.saveAndFlush(user);
     }

@@ -13,7 +13,7 @@
     <div class="form-section">
         <div class="form-box">
             <h1>Microgram</h1>
-            <form action="/auth/register" method="post">
+            <form action="/auth/register" method="post" enctype="multipart/form-data">
 
                 <#if _csrf??>
                     <input type="hidden" name="${(_csrf.parameterName)!'csrf-param-name'}"
@@ -31,6 +31,12 @@
 
                 <@spring.formInput "userDto.lastName" 'id="form3Example1cg" class="form-inputs" placeholder="Last name"' />
                 <@spring.showErrors "<br>" "error text-danger" />
+
+                <@spring.formInput "userDto.description" 'id="form3Example1cg" class="form-inputs" placeholder="Description"' />
+                <@spring.showErrors "<br>" "error text-danger" />
+
+                <label for="formFileMultiple" class="form-label">Avatar</label>
+                <input name="avatar.file" class="form-control" type="file" id="formFileMultiple">
 
                 <button>Sign up</button>
             </form>

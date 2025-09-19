@@ -1,0 +1,27 @@
+databaseChangeLog:
+  - changeSet:
+      id: 003-create-table for user's images
+      author: Islam Kaseiinov
+      changes:
+        - createTable:
+            tableName: users_images
+            columns:
+              - column:
+                  name: id
+                  type: long
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+              - column:
+                  name: user_id
+                  type: long
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_user_id_images
+                    references: users(id)
+              - column:
+                  name: file_name
+                  type: varchar
+                  constraints:
+                    nullable: false

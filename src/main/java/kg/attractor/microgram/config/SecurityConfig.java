@@ -37,12 +37,15 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authorize -> authorize
 
 //                        User
+
+                          .requestMatchers("user/follow").fullyAuthenticated()
                           .requestMatchers("user/profile").fullyAuthenticated()
-                          .requestMatchers("user/**").permitAll()
+                                .requestMatchers("user/**").permitAll()
+
 
 
 //                        File
-                                .requestMatchers("/file/get/**").permitAll()
+                         .requestMatchers("/file/get/**").permitAll()
 
                         .requestMatchers("/file/**").fullyAuthenticated()
                         .requestMatchers("/file/upload/comment/**").fullyAuthenticated()

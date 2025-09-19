@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.Collection;
+import java.util.List;
 
 @Getter
 @Setter
@@ -34,6 +35,7 @@ public class User {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
     private Collection<Like> likes;
 
+
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "subscriptions",
@@ -44,6 +46,16 @@ public class User {
 
     @ManyToMany(fetch = FetchType.LAZY, mappedBy = "subscriptions")
     private Collection<User> followers;
+
+    public void follow(User user) {
+        subscriptions.add(user);
+        user.getFollowers().add(this);
+    }
+
+    public void unfollow(User user) {
+        subscriptions.remove(user);
+        user.getFollowers().remove(this);
+    }
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "users")
     private Collection<Role> roles;

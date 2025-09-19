@@ -29,7 +29,17 @@
                         </div>
                     </div>
                 <#if !isCurrent>
-                    <button type="button" class="btn btn-primary">Follow</button>
+                    <form action="/user/follow" method="post" >
+
+                        <#if _csrf??>
+                            <input type="hidden" name="${(_csrf.parameterName)!'csrf-param-name'}"
+                                   value="${(_csrf.token)!'csrf-token'}"/>
+                        </#if>
+
+                        <input type="hidden" name="follow" value="${userDto.email}">
+                        <button  type="submit" class="btn btn-primary">Follow</button>
+
+                    </form>
                 </#if>
 
             </div>

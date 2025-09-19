@@ -19,10 +19,10 @@
         <div class="logo">Microgram</div>
         <nav class="menu">
             <a href="/"><i class="fas fa-home"></i> Home</a>
-            <a href="#"><i class="fas fa-search"></i> Search</a>
+            <a href="/user/search"><i class="fas fa-search"></i> Search</a>
             <a href="#"><i class="fas fa-compass"></i> Explore</a>
-            <a href="#"><i class="fas fa-plus-square"></i> Create</a>
-            <a href="#"><img src="" class="profile-pic"> Profile</a>
+            <a href="/file/upload"><i class="fas fa-plus-square"></i> Create</a>
+            <a href="/user/profile"><img src="" class="profile-pic"> Profile</a>
         </nav>
     </aside>
 

@@ -2,6 +2,7 @@ package kg.attractor.microgram.service.impl;
 
 import kg.attractor.microgram.dto.UserDto;
 import kg.attractor.microgram.exceptions.SuchEmailAlreadyExistsException;
+import kg.attractor.microgram.exceptions.UserNotFoundException;
 import kg.attractor.microgram.model.Role;
 import kg.attractor.microgram.model.User;
 import kg.attractor.microgram.repository.UserRepository;
@@ -11,7 +12,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import javax.management.relation.RoleNotFoundException;
 import java.util.Collections;
 import java.util.List;
 
@@ -21,6 +21,25 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final RoleService roleService;
     private final PasswordEncoder encoder;
+
+    @Override
+    public UserDto findByEmail(String email){
+        User user = userRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
+        return UserDto.builder()
+                .id(user.getId())
+                .firstName(user.getFirstName())
+                .lastName(user.getLastName())
+                .email(user.getEmail())
+                .password(user.getPassword())
+                .avatar(user.getAvatar())
+                .build();
+    }
+
+    @Override
+    public User findByEmailModel(String email){
+        return userRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
+
+    }
 
     @Override
     public void addUser(UserDto userDto) throws SuchEmailAlreadyExistsException{

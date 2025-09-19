@@ -3,8 +3,10 @@ package kg.attractor.microgram.controller;
 import jakarta.validation.Valid;
 import kg.attractor.microgram.dto.CommentDto;
 import kg.attractor.microgram.dto.FileDto;
+import kg.attractor.microgram.dto.LikeDto;
 import kg.attractor.microgram.dto.UserDto;
 import kg.attractor.microgram.service.CommentService;
+import kg.attractor.microgram.service.LikeService;
 import kg.attractor.microgram.service.UserService;
 import kg.attractor.microgram.service.impl.FileServiceImpl;
 import lombok.RequiredArgsConstructor;
@@ -22,9 +24,10 @@ public class FileController {
     private final UserService userService;
     private final FileServiceImpl fileService;
     private final CommentService commentService;
+    private final LikeService likeService;
 
     @PostMapping("/upload/comment/{fileName}")
-    public String uploadComment(@Valid @PathVariable String fileName, CommentDto commentDto, Authentication auth, BindingResult bindingResult, Model model){
+    public String uploadComment(@Valid CommentDto commentDto, @PathVariable String fileName, Authentication auth, BindingResult bindingResult, Model model){
         if(!bindingResult.hasErrors()){
             FileDto file = fileService.findByNameDto(fileName);
             UserDto user = userService.findByEmail(auth.getName());
@@ -33,12 +36,25 @@ public class FileController {
             commentService.save(commentDto);
             return "redirect:/";
         }
+
+        model.addAttribute("files", fileService.findAllFiles());
         model.addAttribute("commentDto", commentDto);
         return "index";
 
     }
 
-    @GetMapping("{fileName}")
+    @PostMapping("/upload/like/{fileName}")
+    public String uploadLike(LikeDto likeDto, @PathVariable String fileName, Authentication auth, Model model){
+        FileDto file = fileService.findByNameDto(fileName);
+        UserDto user = userService.findByEmail(auth.getName());
+        likeDto.setUserDto(user);
+        likeDto.setFileDto(file);
+        likeService.saveOrDeleteLike(likeDto);
+        return "redirect:/";
+
+    }
+
+    @GetMapping("get/{fileName}")
     public ResponseEntity<?> findByName(@PathVariable String fileName){
         return fileService.findByName(fileName);
     }
@@ -47,7 +63,6 @@ public class FileController {
     public String upload(Authentication auth, Model model){
         model.addAttribute("fileDto", new FileDto());
         model.addAttribute("user", auth.getName());
-        System.out.println("Model: " + model.asMap());
 
         return "file/uploadFile";
     }

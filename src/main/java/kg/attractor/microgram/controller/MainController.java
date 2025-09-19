@@ -22,8 +22,8 @@ public class MainController {
 
     @GetMapping
     public String mainPage(Model model ){
+        model.addAttribute("commentDto", new CommentDto());
         model.addAttribute("files", fileService.findAllFiles());
-//        model.addAttribute("email", auth.getName());
         return "index";
     }
 
